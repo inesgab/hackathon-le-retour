@@ -10,4 +10,4 @@ class Escalier :
         self.x = x
         self.y = y
         self.color = 'GREEN'
-        self.move
+        self.move = False 

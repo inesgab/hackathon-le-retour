@@ -2,6 +2,7 @@ from ines import *
 from Simon import *
 from clemclem import *
 import pygame as pg
+import random as rd
 
 LONGUEUR = 700
 LARGEUR = 500
@@ -19,6 +20,20 @@ CLASSES = {
     "G" : Gold,
     "P" : Potion
 }
+
+def generation_objet(etage):
+    position_potion = ()
+    position_gold = ()
+    m, n = len(etage), len(etage[0])
+    while position_potion == () :
+        a, b= rd.randint(0, n-1), rd.randint(0, m-1)
+        if type(etage[b][a]) is Sol :
+            position_potion = (a, b)
+    while position_gold == () :
+        a, b = rd.randint(0,n-1), rd.randint(0,m-1)
+        if type(etage[b][a]) is Sol :
+            position_gold = (a, b)
+    return position_gold, position_potion
 
 def convert_text2lab(fichier: str) -> list:
     etage = []
@@ -41,6 +56,8 @@ def convert_text2lab(fichier: str) -> list:
     return etage, heros, collectables
 
 etage, heros, collectables = convert_text2lab('premier_etage.txt')
+position_gold, position_potion = generation_objet(etage)
+collectables_simon = {position_gold : Gold(position_gold[0], position_gold[1]), position_potion : Potion(position_gold[0], position_gold[1])}
 
 pg.init()
 screen = pg.display.set_mode((LONGUEUR, LARGEUR))
@@ -62,6 +79,10 @@ while running:
                 pg.draw.rect(screen, objet.color, rect)
     
     for position, objet in collectables.items():
+        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
+        pg.draw.rect(screen, objet.color, rect)
+
+    for position, objet in collectables_simon.items():
         rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
         pg.draw.rect(screen, objet.color, rect)
 

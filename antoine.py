@@ -15,11 +15,14 @@ CLASSES = {
     "+" : Porte,
     " " : Vide,
     "." : Sol,
-    "=" : Escalier
+    "=" : Escalier,
+    "G" : Gold,
+    "P" : Potion
 }
 
 def convert_text2lab(fichier: str) -> list:
     etage = []
+    collectables = {}
     with open(fichier, 'r') as f:
         for indice_ligne, ligne in enumerate(f):
             ligne_propre = ligne.replace('\n', '')
@@ -30,11 +33,14 @@ def convert_text2lab(fichier: str) -> list:
                     heros = CLASSES[char](indice_colonne, indice_ligne)
                     ligne_objet.pop()
                     ligne_objet.append(Sol(indice_colonne, indice_ligne))
-
+                if CLASSES[char](indice_colonne, indice_ligne).gettable:
+                    collectables[(indice_colonne, indice_ligne)] = CLASSES[char](indice_colonne, indice_ligne).gettable
+                    ligne_objet.pop()
+                    ligne_objet.append(Sol(indice_colonne, indice_ligne))
             etage.append(ligne_objet)
-    return etage, heros
+    return etage, heros, collectables
 
-etage, heros = convert_text2lab('premier_etage.txt')
+etage, heros, collectables = convert_text2lab('premier_etage.txt')
 
 pg.init()
 screen = pg.display.set_mode((LONGUEUR, LARGEUR))
@@ -48,6 +54,10 @@ while running:
 
     rect = pg.Rect(0, 0, LONGUEUR, LARGEUR)
     pg.draw.rect(screen, WHITE, rect)
+
+    for position, objet in collectables.items():
+        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
+        pg.draw.rect(screen, objet.color, rect)
 
     for ligne in etage:
         for objet in ligne:

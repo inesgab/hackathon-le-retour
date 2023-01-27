@@ -10,6 +10,17 @@ BLACK = (0, 0, 0)
 PINK = (249, 66, 158)
 PURPLE = (128, 0, 128)
 
+
+GAUCHE = (-1, 0)
+DROITE = (1, 0)
+HAUT = (0, -1)
+BAS = (0, 1)
+
+def somme(x : tuple, y: tuple):
+    a, b = x
+    c, d = y
+    return a+c, b+d
+
 #classes
 class Couloir:
 
@@ -35,5 +46,8 @@ class Perso:
         self.armor = armor
         self.hits = hits
         self.color = RED
+    
+    def change_position(self, direction):
+        self.x, self.y = somme((self.x, self.y), direction)
 
         

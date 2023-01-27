@@ -8,6 +8,8 @@ LONGUEUR = 700
 LARGEUR = 500
 FD = 20
 
+IMGPOTION = pg.image.load('IMAGES/potion.png')
+
 CLASSES = {
     "#" : Couloir,
     "|" : Mur,
@@ -66,6 +68,7 @@ etage, heros, collectables = convert_text2lab('premier_etage.txt')
 visible = set([etage[x][y] for x, y in trouver_voisins(heros.x, heros.y)])
 
 position_gold, position_potion = generation_objet(etage)
+invent = Inventaire()
 collectables_simon = {position_gold : Gold(position_gold[0], position_gold[1]), position_potion : Potion(position_potion[0], position_potion[1])}
 collectables_visibles = set([])
 for neighboor in trouver_voisins(heros.x, heros.y):
@@ -75,6 +78,8 @@ for neighboor in trouver_voisins(heros.x, heros.y):
 pg.init()
 screen = pg.display.set_mode((LONGUEUR, LARGEUR))
 clock = pg.time.Clock()
+
+#zscreen.blit(IMGPOTION, position_potion)
 
 running = True
 
@@ -136,6 +141,14 @@ while running:
         visible.add(etage[neighboor[1]][neighboor[0]])
         if neighboor in collectables_simon:
             collectables_visibles.add(collectables_simon[neighboor])
+    
+    if (heros.x, heros.y) == position_potion : 
+        invent.get_potion()
+        collectables_visibles.remove(position_potion)
+
+    if (heros.x, heros.y) == position_gold : 
+        invent.get_gold()
+        collectables_visibles.remove(position_gold)
                     
 
     pg.display.update()

@@ -9,6 +9,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 PINK = (249, 66, 158)
 PURPLE = (128, 0, 128)
+YELLOW = (240, 195, 0)
 
 #directions
 GAUCHE = (-1, 0)

@@ -15,8 +15,6 @@ class Vide:
         self.through = False
 
 
-
-
 class Potion:
     def __init__(self, x, y):
         self.x = x

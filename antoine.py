@@ -57,7 +57,7 @@ def convert_text2lab(fichier: str) -> list:
 
 etage, heros, collectables = convert_text2lab('premier_etage.txt')
 position_gold, position_potion = generation_objet(etage)
-collectables_simon = {position_gold : Gold(position_gold[0], position_gold[1]), position_potion : Potion(position_gold[0], position_gold[1])}
+collectables_simon = {position_gold : Gold(position_gold[0], position_gold[1]), position_potion : Potion(position_potion[0], position_potion[1])}
 
 pg.init()
 screen = pg.display.set_mode((LONGUEUR, LARGEUR))

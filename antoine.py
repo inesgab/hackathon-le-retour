@@ -28,6 +28,9 @@ def convert_text2lab(fichier: str) -> list:
                 ligne_objet.append(CLASSES[char](indice_colonne, indice_ligne))
                 if char == '@' :
                     heros = CLASSES[char](indice_colonne, indice_ligne)
+                    ligne_objet.pop()
+                    ligne_objet.append(Sol(indice_colonne, indice_ligne))
+
             etage.append(ligne_objet)
     return etage, heros
 
@@ -76,9 +79,6 @@ while running:
                 if not etage[heros.y][heros.x].through:
                     heros.change_position(GAUCHE)
                     
-
-            
-
 
     pg.display.update()
 

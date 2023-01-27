@@ -26,4 +26,20 @@ class Potion:
         self.color = 'blue'
 
 
+class Inventaire:
+    def __init__(self, potion = 0, armure = 0):
+        self.potion = potion
+        self.armure = armure
+        self.items = {'potion' = self.potion, 'armure' = self.armure}
+
+    def get_potion(self):
+        if self.items['potion'] < 5 :
+            self.items['potion'] += 1
+
+    def get_armure(self):
+        if self.items['armure'] < 5 :
+            self.items['armure'] += 1        
+
+
+
 

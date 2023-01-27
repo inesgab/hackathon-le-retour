@@ -10,7 +10,7 @@ BLACK = (0, 0, 0)
 PINK = (249, 66, 158)
 PURPLE = (128, 0, 128)
 
-
+#directions
 GAUCHE = (-1, 0)
 DROITE = (1, 0)
 HAUT = (0, -1)
@@ -28,6 +28,7 @@ class Couloir:
         self.x = x
         self.y = y
         self.color = GRAY
+        self.move = False
     
 class Mur:
 
@@ -35,6 +36,7 @@ class Mur:
         self.x = x
         self.y = y
         self.color = BROWN
+        self.move = False
 
 class Perso:
 
@@ -46,6 +48,7 @@ class Perso:
         self.armor = armor
         self.hits = hits
         self.color = RED
+        self.move = True
     
     def change_position(self, direction):
         self.x, self.y = somme((self.x, self.y), direction)

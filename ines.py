@@ -1,14 +1,16 @@
 from Simon import *
 from clemclem import *
 
+#trucs utiles
 RED = (174, 74, 52)
 GRAY = (204, 204, 204)
-BROWN = (19, 14, 10)
+BROWN = (248, 142, 85)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 PINK = (249, 66, 158)
 PURPLE = (128, 0, 128)
 
+#classes
 class Couloir:
 
     def __init__(self, x, y):
@@ -33,16 +35,5 @@ class Perso:
         self.armor = armor
         self.hits = hits
         self.color = RED
-
-classes = {
-    "#" : Couloir,
-    "|" : Mur,
-    "-" : Mur,
-    "@" : Perso,
-    "+" : Porte,
-    " " : Vide,
-    "." : Sol,
-    "=" : Escalier
-}
 
         

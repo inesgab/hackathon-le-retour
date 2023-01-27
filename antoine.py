@@ -34,7 +34,7 @@ def convert_text2lab(fichier: str) -> list:
                     ligne_objet.pop()
                     ligne_objet.append(Sol(indice_colonne, indice_ligne))
                 if CLASSES[char](indice_colonne, indice_ligne).gettable:
-                    collectables[(indice_colonne, indice_ligne)] = CLASSES[char](indice_colonne, indice_ligne).gettable
+                    collectables[(indice_colonne, indice_ligne)] = CLASSES[char](indice_colonne, indice_ligne)
                     ligne_objet.pop()
                     ligne_objet.append(Sol(indice_colonne, indice_ligne))
             etage.append(ligne_objet)

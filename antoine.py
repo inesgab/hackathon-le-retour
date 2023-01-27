@@ -35,6 +35,13 @@ def generation_objet(etage):
             position_gold = (a, b)
     return position_gold, position_potion
 
+def trouver_voisins(x, y):
+    voisins = []
+    for i in range(-2,3):
+        for j in range(-2,3):
+            voisins.append((x+i, y+j))
+    return voisins
+
 def convert_text2lab(fichier: str) -> list:
     etage = []
     collectables = {}
@@ -56,6 +63,7 @@ def convert_text2lab(fichier: str) -> list:
     return etage, heros, collectables
 
 etage, heros, collectables = convert_text2lab('premier_etage.txt')
+visible = set([etage[x][y] for x, y in trouver_voisins(heros.x, heros.y)])
 position_gold, position_potion = generation_objet(etage)
 collectables_simon = {position_gold : Gold(position_gold[0], position_gold[1]), position_potion : Potion(position_potion[0], position_potion[1])}
 
@@ -72,19 +80,24 @@ while running:
     rect = pg.Rect(0, 0, LONGUEUR, LARGEUR)
     pg.draw.rect(screen, WHITE, rect)
 
-    for ligne in etage:
+    '''for ligne in etage:
         for objet in ligne:
             if not objet.move:
                 rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-                pg.draw.rect(screen, objet.color, rect)
+                pg.draw.rect(screen, objet.color, rect)'''
     
-    for position, objet in collectables.items():
+    for objet in visible:
+        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
+        pg.draw.rect(screen, objet.color, rect)
+
+    
+    '''for position, objet in collectables.items():
         rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
         pg.draw.rect(screen, objet.color, rect)
 
     for position, objet in collectables_simon.items():
         rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-        pg.draw.rect(screen, objet.color, rect)
+        pg.draw.rect(screen, objet.color, rect)'''
 
     rect_heros = pg.Rect(FD*heros.x, FD*heros.y, FD, FD)
     pg.draw.rect(screen, heros.color, rect_heros)
@@ -109,6 +122,11 @@ while running:
                 heros.change_position(DROITE)
                 if not etage[heros.y][heros.x].through:
                     heros.change_position(GAUCHE)
+
+    for neighboor in trouver_voisins(heros.x, heros.y):
+        visible.add(etage[neighboor[0]][neighboor[1]])
+        if neighboor in collectables_simon:
+            visible.add(collectables_simon[neighboor])
                     
 
     pg.display.update()

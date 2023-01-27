@@ -30,6 +30,7 @@ class Couloir:
         self.color = GRAY
         self.move = False
         self.through = True
+        self.gettable = False
     
 class Mur:
 
@@ -39,6 +40,7 @@ class Mur:
         self.color = BROWN
         self.move = False
         self.through = False
+        self.gettable = False
 
 class Perso:
 
@@ -51,6 +53,8 @@ class Perso:
         self.hits = hits
         self.color = RED
         self.move = True
+        self.gettable = False
+
     
     def change_position(self, direction):
         self.x, self.y = somme((self.x, self.y), direction)
@@ -60,10 +64,9 @@ class Perso:
 
 class Gold:
 
-    def __init__(self, x, y, value = 10):
+    def __init__(self, x, y, value = 1):
         self.x = x
         self.y = y
         self.value = value
         self.through = True
-
-        
+        self.gettable = True

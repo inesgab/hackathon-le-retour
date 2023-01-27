@@ -61,12 +61,22 @@ while running:
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_z:
                 heros.change_position(HAUT)
+                if not etage[heros.y][heros.x].through:
+                    heros.change_position(BAS)
             elif event.key == pg.K_s:
                 heros.change_position(BAS)
+                if not etage[heros.y][heros.x].through:
+                    heros.change_position(HAUT)
             elif event.key == pg.K_q:
                 heros.change_position(GAUCHE)
+                if not etage[heros.y][heros.x].through:
+                    heros.change_position(DROITE)
             elif event.key == pg.K_d:
                 heros.change_position(DROITE)
+                if not etage[heros.y][heros.x].through:
+                    heros.change_position(GAUCHE)
+                    
+
             
 
 

@@ -4,11 +4,12 @@ from clemclem import *
 import pygame as pg
 import random as rd
 
-LONGUEUR = 700
-LARGEUR = 500
+LONGUEUR = 800
+LARGEUR = 800
 FD = 20
 
 IMGPOTION = pg.image.load('IMAGES/potion.png')
+IMGPIECE = pg.image.load('IMAGES/piece.png')
 
 CLASSES = {
     "#" : Couloir,
@@ -64,7 +65,7 @@ def convert_text2lab(fichier: str) -> list:
             etage.append(ligne_objet)
     return etage, heros, collectables
 
-etage, heros, collectables = convert_text2lab('deux_etage.txt')
+etage, heros, collectables = convert_text2lab('premier_etage.txt')
 visible = set([etage[x][y] for x, y in trouver_voisins(heros.x, heros.y)])
 
 position_gold, position_potion = generation_objet(etage)
@@ -104,8 +105,7 @@ while running:
         if type(objet) is Potion:
             screen.blit(IMGPOTION, (position_potion[0]*FD, position_potion[1]*FD))
         else:
-            rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-            pg.draw.rect(screen, objet.color, rect)
+            screen.blit(IMGPIECE, (position_gold[0]*FD, position_gold[1]*FD))
 
     
     '''for position, objet in collectables.items():

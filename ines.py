@@ -70,6 +70,7 @@ class Gold:
     def __init__(self, x, y, value = 1):
         self.x = x
         self.y = y
+        self.color = YELLOW
         self.value = value
         self.through = True
         self.gettable = True

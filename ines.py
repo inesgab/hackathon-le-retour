@@ -1,19 +1,27 @@
 from Simon import *
 from clemclem import *
 
+RED = (174, 74, 52)
+GRAY = (204, 204, 204)
+BROWN = (19, 14, 10)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+PINK = (249, 66, 158)
+PURPLE = (128, 0, 128)
+
 class Couloir:
 
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.color = 'gray'
+        self.color = GRAY
     
 class Mur:
 
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.color = 'brown'
+        self.color = BROWN
 
 class Perso:
 
@@ -24,7 +32,7 @@ class Perso:
         self.gold = gold
         self.armor = armor
         self.hits = hits
-        self.color = 'red'
+        self.color = RED
 
 classes = {
     "#" : Couloir,

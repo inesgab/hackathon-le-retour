@@ -44,7 +44,7 @@ while running:
     clock.tick(10)
 
     rect = pg.Rect(0, 0, LONGUEUR, LARGEUR)
-    pg.draw.rect(screen, BLACK, rect)
+    pg.draw.rect(screen, WHITE, rect)
 
     for ligne in etage:
         for objet in ligne:

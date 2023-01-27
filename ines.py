@@ -1,3 +1,6 @@
+from Simon import *
+from clemclem import *
+
 class Couloir:
 
     def __init__(self, x, y):
@@ -23,5 +26,15 @@ class Perso:
         self.hits = hits
         self.color = 'red'
 
+classes = {
+    "#" : Couloir,
+    "|" : Mur,
+    "-" : Mur,
+    "@" : Perso,
+    "+" : Porte,
+    " " : Vide,
+    "." : Sol,
+    "=" : Escalier
+}
 
         

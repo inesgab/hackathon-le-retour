@@ -58,8 +58,16 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-        #if event.type == pg.KEYDOWN:
-            #if event.key == pg.K_Z:
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_z:
+                heros.change_position(HAUT)
+            elif event.key == pg.K_s:
+                heros.change_position(BAS)
+            elif event.key == pg.K_q:
+                heros.change_position(GAUCHE)
+            elif event.key == pg.K_d:
+                heros.change_position(DROITE)
+            
 
 
     pg.display.update()

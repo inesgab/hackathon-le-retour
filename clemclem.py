@@ -5,6 +5,7 @@ class Sol:
         self.color = 'white'
         self.move = False
         self.through = True
+        self.gettable = False
 
 class Vide:
     def __init__(self, x, y):
@@ -13,6 +14,7 @@ class Vide:
         self.color = 'black'
         self.move = False 
         self.through = False
+        self.gettable = False
 
 
 class Potion:
@@ -20,5 +22,6 @@ class Potion:
         self.x = x
         self.y = y 
         self.move = False
+        self.gettable = True
 
 

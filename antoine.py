@@ -37,8 +37,8 @@ def generation_objet(etage):
 
 def trouver_voisins(x, y):
     voisins = []
-    for i in range(-2,3):
-        for j in range(-2,3):
+    for i in range(-1,2):
+        for j in range(-1,2):
             voisins.append((x+i, y+j))
     return voisins
 
@@ -64,8 +64,13 @@ def convert_text2lab(fichier: str) -> list:
 
 etage, heros, collectables = convert_text2lab('premier_etage.txt')
 visible = set([etage[x][y] for x, y in trouver_voisins(heros.x, heros.y)])
+
 position_gold, position_potion = generation_objet(etage)
 collectables_simon = {position_gold : Gold(position_gold[0], position_gold[1]), position_potion : Potion(position_potion[0], position_potion[1])}
+collectables_visibles = set([])
+for neighboor in trouver_voisins(heros.x, heros.y):
+    if neighboor in collectables_simon:
+        collectables_visibles.add(collectables_simon[neighboor])
 
 pg.init()
 screen = pg.display.set_mode((LONGUEUR, LARGEUR))
@@ -78,7 +83,7 @@ while running:
     clock.tick(10)
 
     rect = pg.Rect(0, 0, LONGUEUR, LARGEUR)
-    pg.draw.rect(screen, WHITE, rect)
+    pg.draw.rect(screen, BLACK, rect)
 
     '''for ligne in etage:
         for objet in ligne:
@@ -87,6 +92,10 @@ while running:
                 pg.draw.rect(screen, objet.color, rect)'''
     
     for objet in visible:
+        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
+        pg.draw.rect(screen, objet.color, rect)
+
+    for objet in collectables_visibles:
         rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
         pg.draw.rect(screen, objet.color, rect)
 
@@ -124,9 +133,9 @@ while running:
                     heros.change_position(GAUCHE)
 
     for neighboor in trouver_voisins(heros.x, heros.y):
-        visible.add(etage[neighboor[0]][neighboor[1]])
+        visible.add(etage[neighboor[1]][neighboor[0]])
         if neighboor in collectables_simon:
-            visible.add(collectables_simon[neighboor])
+            collectables_visibles.add(collectables_simon[neighboor])
                     
 
     pg.display.update()

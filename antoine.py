@@ -55,15 +55,15 @@ while running:
     rect = pg.Rect(0, 0, LONGUEUR, LARGEUR)
     pg.draw.rect(screen, WHITE, rect)
 
-    for position, objet in collectables.items():
-        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-        pg.draw.rect(screen, objet.color, rect)
-
     for ligne in etage:
         for objet in ligne:
             if not objet.move:
                 rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
                 pg.draw.rect(screen, objet.color, rect)
+    
+    for position, objet in collectables.items():
+        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
+        pg.draw.rect(screen, objet.color, rect)
 
     rect_heros = pg.Rect(FD*heros.x, FD*heros.y, FD, FD)
     pg.draw.rect(screen, heros.color, rect_heros)

@@ -40,41 +40,5 @@ class Inventaire:
 
 
 
-etage, heros, collectables = convert_text2lab('premier_etage.txt')
-position_gold, position_potion = generation_objet(etage)
-#invent = Inventaire()
-collectables_simon = {position_gold : Gold(position_gold[0], position_gold[1]), position_potion : Potion(position_potion[0], position_potion[1])}
-
-pg.init()
-screen = pg.display.set_mode((LONGUEUR, LARGEUR))
-clock = pg.time.Clock()
-
-running = True
-
-while running:
-
-    clock.tick(10)
-
-    rect = pg.Rect(0, 0, LONGUEUR, LARGEUR)
-    pg.draw.rect(screen, WHITE, rect)
-
-    for ligne in etage:
-        for objet in ligne:
-            if not objet.move:
-                rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-                pg.draw.rect(screen, objet.color, rect)
-    
-    for position, objet in collectables.items():
-        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-        pg.draw.rect(screen, objet.color, rect)
-
-    for position, objet in collectables_simon.items():
-        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-        pg.draw.rect(screen, objet.color, rect)
-
-   # if (heros.x, heros.y) == position_potion : 
-        invent.get_potion()
-        del collectables_simon[position_potion]
-
 
 

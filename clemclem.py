@@ -27,10 +27,8 @@ class Potion:
 
 
 class Inventaire:
-    def __init__(self, potion = 0, armure = 0):
-        self.potion = potion
-        self.armure = armure
-        self.items = {'potion' = self.potion, 'armure' = self.armure}
+    def __init__(self):
+        self.items = {'potion' : 0, 'armure' : 0}
 
     def get_potion(self):
         if self.items['potion'] < 5 :

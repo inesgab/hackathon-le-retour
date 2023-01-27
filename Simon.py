@@ -4,6 +4,7 @@ class Porte :
         self.y = y
         self.color = 'PINK'
         self.move = False
+        self.through = True
 
 class Escalier : 
     def __init__(self, x, y):
@@ -11,3 +12,4 @@ class Escalier :
         self.y = y
         self.color = 'GREEN'
         self.move = False 
+        self.through = True 

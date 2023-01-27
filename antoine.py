@@ -26,10 +26,12 @@ def convert_text2lab(fichier: str) -> list:
             ligne_objet = []
             for indice_colonne, char in enumerate(ligne_propre):
                 ligne_objet.append(CLASSES[char](indice_colonne, indice_ligne))
+                if char == '@' :
+                    heros = CLASSES[char](indice_colonne, indice_ligne)
             etage.append(ligne_objet)
-    return etage
+    return etage, heros
 
-etage = convert_text2lab('premier_etage.txt')
+etage, heros = convert_text2lab('premier_etage.txt')
 
 pg.init()
 screen = pg.display.set_mode((LONGUEUR, LARGEUR))
@@ -42,16 +44,23 @@ while running:
     clock.tick(10)
 
     rect = pg.Rect(0, 0, LONGUEUR, LARGEUR)
-    pg.draw.rect(screen, (255, 255, 255), rect)
+    pg.draw.rect(screen, BLACK, rect)
 
     for ligne in etage:
         for objet in ligne:
-            rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-            pg.draw.rect(screen, objet.color, rect)
+            if not objet.move:
+                rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
+                pg.draw.rect(screen, objet.color, rect)
+
+    rect_heros = pg.Rect(FD*heros.x, FD*heros.y, FD, FD)
+    pg.draw.rect(screen, heros.color, rect_heros)
 
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
+        #if event.type == pg.KEYDOWN:
+            #if event.key == pg.K_Z:
+
 
     pg.display.update()
 

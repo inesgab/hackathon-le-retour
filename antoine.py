@@ -10,6 +10,8 @@ FD = 20
 
 IMGPOTION = pg.image.load('IMAGES/potion.png')
 IMGPIECE = pg.image.load('IMAGES/piece.png')
+IMGHERO = pg.image.load('IMAGES/bonhomme.png')
+ESCALIER = pg.image.load('IMAGES/escalier.png')
 
 CLASSES = {
     "#" : Couloir,
@@ -65,7 +67,7 @@ def convert_text2lab(fichier: str) -> list:
             etage.append(ligne_objet)
     return etage, heros, collectables
 
-etage, heros, collectables = convert_text2lab('premier_etage.txt')
+etage, heros, collectables = convert_text2lab('deux_etage.txt')
 visible = set([etage[x][y] for x, y in trouver_voisins(heros.x, heros.y)])
 
 position_gold, position_potion = generation_objet(etage)
@@ -98,8 +100,11 @@ while running:
                 pg.draw.rect(screen, objet.color, rect)'''
     
     for objet in visible:
-        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-        pg.draw.rect(screen, objet.color, rect)
+        if type(objet) is Escalier:
+            screen.blit(ESCALIER, (objet.x*FD, objet.y*FD))
+        else:
+            rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
+            pg.draw.rect(screen, objet.color, rect)
 
     for objet in collectables_visibles.values():
         if type(objet) is Potion:
@@ -116,8 +121,10 @@ while running:
         rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
         pg.draw.rect(screen, objet.color, rect)'''
 
-    rect_heros = pg.Rect(FD*heros.x, FD*heros.y, FD, FD)
-    pg.draw.rect(screen, heros.color, rect_heros)
+    '''rect_heros = pg.Rect(FD*heros.x, FD*heros.y, FD, FD)
+    pg.draw.rect(screen, heros.color, rect_heros)'''
+
+    screen.blit(IMGHERO, (heros.x*FD, heros.y*FD))
 
     for event in pg.event.get():
         if event.type == pg.QUIT:

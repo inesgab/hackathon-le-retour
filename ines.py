@@ -44,23 +44,26 @@ class Mur:
 
 class Perso:
 
-    def __init__(self, x, y, name = 'Luc', gold = 0, armor = 5, hits = 12):
+    def __init__(self, x, y, name = 'Luc'):
         self.name = name
         self.x = x
         self.y = y
-        self.gold = gold
-        self.armor = armor
-        self.hits = hits
+        self.gold = 0
+        self.defense = 5
+        self.strength = 12
         self.color = RED
         self.move = True
         self.gettable = False
-
+        self.health = 50
     
     def change_position(self, direction):
         self.x, self.y = somme((self.x, self.y), direction)
     
     def get_gold(self, gold):
         self.gold += gold.value
+    
+    def get_potion(self, potion):
+        self.health += 10
 
 class Gold:
 
@@ -70,3 +73,5 @@ class Gold:
         self.value = value
         self.through = True
         self.gettable = True
+
+

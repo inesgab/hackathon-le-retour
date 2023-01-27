@@ -23,5 +23,4 @@ class Potion:
         self.y = y 
         self.move = False
 
-class Potion_soin(Potion):
-    
+

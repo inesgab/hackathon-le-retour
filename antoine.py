@@ -69,11 +69,13 @@ visible = set([etage[x][y] for x, y in trouver_voisins(heros.x, heros.y)])
 
 position_gold, position_potion = generation_objet(etage)
 invent = Inventaire()
-collectables_simon = {position_gold : Gold(position_gold[0], position_gold[1]), position_potion : Potion(position_potion[0], position_potion[1])}
-collectables_visibles = set([])
+piece = Gold(position_gold[0], position_gold[1])
+panoramix = Potion(position_potion[0], position_potion[1])
+collectables_simon = {position_gold : piece, position_potion : panoramix}
+collectables_visibles = {}
 for neighboor in trouver_voisins(heros.x, heros.y):
     if neighboor in collectables_simon:
-        collectables_visibles.add(collectables_simon[neighboor])
+        collectables_visibles[neighboor] = collectables_simon[neighboor]
 
 pg.init()
 screen = pg.display.set_mode((LONGUEUR, LARGEUR))
@@ -100,7 +102,7 @@ while running:
         rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
         pg.draw.rect(screen, objet.color, rect)
 
-    for objet in collectables_visibles:
+    for objet in collectables_visibles.values():
         rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
         pg.draw.rect(screen, objet.color, rect)
 
@@ -140,16 +142,19 @@ while running:
     for neighboor in trouver_voisins(heros.x, heros.y):
         visible.add(etage[neighboor[1]][neighboor[0]])
         if neighboor in collectables_simon:
-            collectables_visibles.add(collectables_simon[neighboor])
+            collectables_visibles[neighboor] = collectables_simon[neighboor]
     
     if (heros.x, heros.y) == position_potion : 
         invent.get_potion()
-        collectables_visibles.remove(position_potion)
+        collectables_visibles.pop(position_potion)
+        collectables_simon.pop(position_potion)
+        position_potion = None
 
     if (heros.x, heros.y) == position_gold : 
-        invent.get_gold()
-        collectables_visibles.remove(position_gold)
-                    
+        heros.get_gold(piece)
+        collectables_visibles.pop(position_gold)
+        collectables_simon.pop(position_gold)
+        position_gold = None
 
     pg.display.update()
 

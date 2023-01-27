@@ -22,6 +22,7 @@ class Potion:
         self.x = x
         self.y = y 
         self.move = False
-        self.gettable = True
+        self.gettable = True        
+        self.color = 'blue'
 
 

@@ -86,6 +86,9 @@ clock = pg.time.Clock()
 
 running = True
 
+on_a_une_potion = False
+on_a_une_piece = False
+ 
 while running:
 
     clock.tick(10)
@@ -157,12 +160,19 @@ while running:
         collectables_visibles.pop(position_potion)
         collectables_simon.pop(position_potion)
         position_potion = None
+        on_a_une_potion = True
 
     if (heros.x, heros.y) == position_gold : 
         heros.get_gold(piece)
         collectables_visibles.pop(position_gold)
         collectables_simon.pop(position_gold)
         position_gold = None
+        on_a_une_piece = True
+
+    if on_a_une_potion == True:
+        screen.blit(IMGPOTION, (0, 0))
+    if on_a_une_piece == True:
+        screen.blit(IMGPIECE, (1*FD, 0))
 
     pg.display.update()
 

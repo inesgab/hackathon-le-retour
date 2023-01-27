@@ -1,16 +1,17 @@
-## Inventaire
-
 from ines import *
 from Simon import *
 from clemclem import *
 import pygame as pg
 import random as rd
 
-LONGUEUR = 700
-LARGEUR = 500
+LONGUEUR = 800
+LARGEUR = 800
 FD = 20
 
 IMGPOTION = pg.image.load('IMAGES/potion.png')
+IMGPIECE = pg.image.load('IMAGES/piece.png')
+IMGHERO = pg.image.load('IMAGES/bonhomme.png')
+ESCALIER = pg.image.load('IMAGES/escalier.png')
 
 CLASSES = {
     "#" : Couloir,
@@ -24,6 +25,8 @@ CLASSES = {
     "G" : Gold,
     "P" : Potion
 }
+
+invent = Inventaire()
 
 def generation_objet(etage):
     position_potion = ()
@@ -46,7 +49,7 @@ def trouver_voisins(x, y):
             voisins.append((x+i, y+j))
     return voisins
 
-def convert_text2lab(fichier: str) -> list:
+def convert_text2lab(fichier: str, heros = None) -> list:
     etage = []
     collectables = {}
     with open(fichier, 'r') as f:
@@ -56,34 +59,44 @@ def convert_text2lab(fichier: str) -> list:
             for indice_colonne, char in enumerate(ligne_propre):
                 ligne_objet.append(CLASSES[char](indice_colonne, indice_ligne))
                 if char == '@' :
-                    heros = CLASSES[char](indice_colonne, indice_ligne)
+                    new_heros = CLASSES[char](indice_colonne, indice_ligne)
+                    if heros != None:
+                        new_heros.health = heros.health
                     ligne_objet.pop()
                     ligne_objet.append(Sol(indice_colonne, indice_ligne))
+                if char == '=':
+                    stairs = Escalier(indice_colonne, indice_ligne)
                 if CLASSES[char](indice_colonne, indice_ligne).gettable:
                     collectables[(indice_colonne, indice_ligne)] = CLASSES[char](indice_colonne, indice_ligne)
                     ligne_objet.pop()
                     ligne_objet.append(Sol(indice_colonne, indice_ligne))
             etage.append(ligne_objet)
-    return etage, heros, collectables
+    return etage, new_heros, collectables, stairs
 
-etage, heros, collectables = convert_text2lab('premier_etage.txt')
-visible = set([etage[x][y] for x, y in trouver_voisins(heros.x, heros.y)])
+def initialisation(fichier, ancien_heros = None):
+    etage, heros, collectables, stairs = convert_text2lab(fichier, ancien_heros)
+    visible = set([etage[x][y] for x, y in trouver_voisins(heros.x, heros.y)])
+    position_gold, position_potion = generation_objet(etage)
+    piece = Gold(position_gold[0], position_gold[1])
+    panoramix = Potion(position_potion[0], position_potion[1])
+    collectables_simon = {position_gold : piece, position_potion : panoramix}
+    collectables_visibles = {}
+    for neighboor in trouver_voisins(heros.x, heros.y):
+        if neighboor in collectables_simon:
+            collectables_visibles[neighboor] = collectables_simon[neighboor]
+    return etage, heros, collectables, visible, position_gold, position_potion, piece, panoramix, collectables_simon, collectables_visibles, stairs
 
-position_gold, position_potion = generation_objet(etage)
-invent = Inventaire()
-piece = Gold(position_gold[0], position_gold[1])
-panoramix = Potion(position_potion[0], position_potion[1])
-collectables_simon = {position_gold : piece, position_potion : panoramix}
-collectables_visibles = {}
-for neighboor in trouver_voisins(heros.x, heros.y):
-    if neighboor in collectables_simon:
-        collectables_visibles[neighboor] = collectables_simon[neighboor]
 
 pg.init()
 screen = pg.display.set_mode((LONGUEUR, LARGEUR))
 clock = pg.time.Clock()
-on_a_une_potion = False
+
 running = True
+
+etage, heros, collectables, visible, position_gold, position_potion, piece, panoramix, collectables_simon, collectables_visibles, stairs = initialisation('premier_etage.txt', None)
+
+on_a_une_potion = False
+on_a_une_piece = False
 
 while running:
 
@@ -92,7 +105,6 @@ while running:
     rect = pg.Rect(0, 0, LONGUEUR, LARGEUR)
     pg.draw.rect(screen, BLACK, rect)
 
-
     '''for ligne in etage:
         for objet in ligne:
             if not objet.move:
@@ -100,15 +112,17 @@ while running:
                 pg.draw.rect(screen, objet.color, rect)'''
     
     for objet in visible:
-        rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-        pg.draw.rect(screen, objet.color, rect)
+        if type(objet) is Escalier:
+            screen.blit(ESCALIER, (objet.x*FD, objet.y*FD))
+        else:
+            rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
+            pg.draw.rect(screen, objet.color, rect)
 
     for objet in collectables_visibles.values():
         if type(objet) is Potion:
             screen.blit(IMGPOTION, (position_potion[0]*FD, position_potion[1]*FD))
         else:
-            rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
-            pg.draw.rect(screen, objet.color, rect)
+            screen.blit(IMGPIECE, (position_gold[0]*FD, position_gold[1]*FD))
 
     
     '''for position, objet in collectables.items():
@@ -119,8 +133,10 @@ while running:
         rect = pg.Rect(FD*objet.x, FD*objet.y, FD, FD)
         pg.draw.rect(screen, objet.color, rect)'''
 
-    rect_heros = pg.Rect(FD*heros.x, FD*heros.y, FD, FD)
-    pg.draw.rect(screen, heros.color, rect_heros)
+    '''rect_heros = pg.Rect(FD*heros.x, FD*heros.y, FD, FD)
+    pg.draw.rect(screen, heros.color, rect_heros)'''
+
+    screen.blit(IMGHERO, (heros.x*FD, heros.y*FD))
 
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -160,9 +176,15 @@ while running:
         collectables_visibles.pop(position_gold)
         collectables_simon.pop(position_gold)
         position_gold = None
-
+        on_a_une_piece = True
+        
     if on_a_une_potion == True:
         screen.blit(IMGPOTION, (0, 0))
+    if on_a_une_piece == True:
+        screen.blit(IMGPIECE, (1*FD, 0))
+
+    if (heros.x, heros.y) == (stairs.x, stairs.y) : 
+        etage, heros, collectables, visible, position_gold, position_potion, piece, panoramix, collectables_simon, collectables_visibles, stairs = initialisation('deux_etage.txt', heros)
 
     pg.display.update()
 
